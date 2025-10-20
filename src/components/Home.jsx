@@ -30,15 +30,15 @@ const Home = ({ setEditData }) => {
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">
             <div className="mb-4">
-              <FaStickyNote 
-                size={64} 
+              <FaStickyNote
+                size={64}
                 className="text-primary mb-3"
                 style={{ opacity: 0.9 }}
               />
             </div>
-            <h1 
-              className="display-4 fw-bold mb-4" 
-              style={{ 
+            <h1
+              className="display-4 fw-bold mb-4"
+              style={{
                 fontFamily: "Georgia, serif",
                 color: "#2c3e50",
                 background: "linear-gradient(135deg, #2c3e50 0%, #3498db 100%)",
@@ -51,11 +51,14 @@ const Home = ({ setEditData }) => {
             <p className="lead text-muted mb-4 fs-5">
               Capture your thoughts, organize your ideas, and boost your productivity with our intuitive note-taking platform.
             </p>
-            
+
             {/* CTA Button */}
             <button
               className="btn btn-primary btn-lg px-4 py-2 fw-semibold"
-              onClick={() => navigate("/notepad")}
+              onClick={() => {
+                setEditData(null)
+                navigate("/notepad")
+              }}
               style={{
                 background: "linear-gradient(135deg, #3498db 0%, #2c3e50 100%)",
                 border: "none",
@@ -84,7 +87,7 @@ const Home = ({ setEditData }) => {
             <div className="row g-4">
               {features.map((feature, index) => (
                 <div key={index} className="col-md-4">
-                  <div 
+                  <div
                     className="card h-100 border-0 text-center p-4"
                     style={{
                       background: "rgba(255, 255, 255, 0.8)",
