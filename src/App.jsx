@@ -14,13 +14,14 @@ function App() {
     title: "",
     data: ""
   })
+  const [gotoNotepad, setGoToNotePad] = useState(false)
   return (
     <>
       <Header />
       <Routes>
-        <Route path='/' element={<Home/>} />
+        <Route path='/' element={<Home setGoToNotePad={setGoToNotePad} />} />
         <Route path='/about' element={<About/>} />
-        <Route path='/notepad' element={<LetterPad editData={editData} />} />
+        <Route path='/notepad' element={<LetterPad editData={editData} gotoNotepad={gotoNotepad} />} />
         <Route path='/notes' element={<NoteList setEditData={setEditData} />} />
       </Routes>
       <Footer/>

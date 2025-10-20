@@ -5,7 +5,7 @@ import { FaSave, FaTrash, FaArrowLeft, FaStar, FaCalendarAlt } from "react-icons
 import { ToastContainer, toast } from 'react-toastify';
 
 
-const LetterPad = ({ editData }) => {
+const LetterPad = ({ editData, gotoNotepad }) => {
   const navigate = useNavigate();
   const [notepadData, setNotepadData] = useState({
     id: "",
@@ -14,7 +14,7 @@ const LetterPad = ({ editData }) => {
     importance: "Medium",
     createdAt: ""
   });
-  
+
   const [isSaving, setIsSaving] = useState(false);
   const [charCount, setCharCount] = useState(0);
 
@@ -22,22 +22,33 @@ const LetterPad = ({ editData }) => {
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (editData) {
-      setNotepadData(editData);
-      setCharCount(editData.data.length);
-      titleRef.current?.focus();
-    } else {
-      setNotepadData((oldData) => ({
-        ...oldData,
-        createdAt: new Date().toLocaleString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-      }));
+    if (gotoNotepad) {
+      setNotepadData({
+        id: "",
+        title: "",
+        data: "",
+        importance: "Medium",
+        createdAt: ""
+      })
+    }
+    else {
+      if (editData) {
+        setNotepadData(editData);
+        setCharCount(editData.data.length);
+        titleRef.current?.focus();
+      } else {
+        setNotepadData((oldData) => ({
+          ...oldData,
+          createdAt: new Date().toLocaleString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        }));
+      }
     }
   }, [editData]);
 
@@ -97,14 +108,14 @@ const LetterPad = ({ editData }) => {
         });
         showToast("Note created successfully! ✨", "success");
       }
-      
+
       console.log("Saved Note:", res);
-      
+
       // Navigate after a short delay to show the success message
       setTimeout(() => {
         navigate("/notes");
       }, 1500);
-      
+
     } catch (error) {
       console.error("Error saving note:", error);
       showToast("Failed to save note. Please try again.", "error");
@@ -122,7 +133,7 @@ const LetterPad = ({ editData }) => {
         </div>,
         "warning"
       );
-      
+
       // Use setTimeout to allow the toast to show first
       setTimeout(() => {
         if (window.confirm("Are you sure you want to clear this note? All unsaved changes will be lost.")) {
@@ -193,7 +204,7 @@ const LetterPad = ({ editData }) => {
       <div className="row mb-4">
         <div className="col-12">
           <div className="d-flex align-items-center gap-3 mb-3">
-            <button 
+            <button
               className="btn btn-outline-secondary btn-sm"
               onClick={handleBack}
               style={{ borderRadius: "8px" }}
@@ -201,7 +212,7 @@ const LetterPad = ({ editData }) => {
               <FaArrowLeft className="me-1" />
               Back to Notes
             </button>
-            <h4 className="mb-0 fw-bold" style={{ 
+            <h4 className="mb-0 fw-bold" style={{
               fontFamily: "Georgia, serif",
               color: "#2c3e50"
             }}>
@@ -214,9 +225,9 @@ const LetterPad = ({ editData }) => {
       {/* Note Editor */}
       <div className="row justify-content-center">
         <div className="col-12 col-lg-10">
-          <div 
+          <div
             className="card border-0 shadow-sm"
-            style={{ 
+            style={{
               borderRadius: "12px",
               background: "linear-gradient(135deg, #fdfbfb 0%, #f5f5f5 100%)"
             }}
@@ -252,7 +263,7 @@ const LetterPad = ({ editData }) => {
                       <label className="fw-semibold text-muted mb-0">Importance:</label>
                       <select
                         className="form-select form-select-sm border-0"
-                        style={{ 
+                        style={{
                           width: "120px",
                           background: "transparent",
                           fontWeight: "600",
@@ -309,9 +320,9 @@ const LetterPad = ({ editData }) => {
                 <div className="text-muted small">
                   {charCount} characters • {notepadData.data.split(/\s+/).filter(word => word.length > 0).length} words
                 </div>
-                
+
                 <div className="d-flex gap-2">
-                  <button 
+                  <button
                     className="btn btn-outline-danger d-flex align-items-center gap-2"
                     onClick={handleClear}
                     disabled={isSaving}
@@ -320,7 +331,7 @@ const LetterPad = ({ editData }) => {
                     <FaTrash />
                     Clear
                   </button>
-                  <button 
+                  <button
                     className="btn btn-primary d-flex align-items-center gap-2 px-4"
                     onClick={handleSave}
                     disabled={isSaving}

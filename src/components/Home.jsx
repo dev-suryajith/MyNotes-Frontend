@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaStickyNote, FaSearch, FaEdit } from "react-icons/fa";
 
-const Home = ({ setEditData }) => {
+const Home = ({ setEditData, setGoToNotePad }) => {
   const navigate = useNavigate();
 
   const features = [
@@ -22,6 +22,15 @@ const Home = ({ setEditData }) => {
       description: "Instantly find notes with powerful search"
     }
   ];
+
+  const gotoNotepad = () => {
+    // setEditData({
+    //   title: "",
+    //   data: ""
+    // })
+    setGoToNotePad(true)
+    navigate("/notepad")
+  }
 
   return (
     <div className="min-vh-100 d-flex align-items-center">
@@ -55,10 +64,7 @@ const Home = ({ setEditData }) => {
             {/* CTA Button */}
             <button
               className="btn btn-primary btn-lg px-4 py-2 fw-semibold"
-              onClick={() => {
-                setEditData(null)
-                navigate("/notepad")
-              }}
+              onClick={gotoNotepad}
               style={{
                 background: "linear-gradient(135deg, #3498db 0%, #2c3e50 100%)",
                 border: "none",
