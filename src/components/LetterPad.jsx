@@ -25,6 +25,7 @@ const LetterPad = ({ editData, gotoNotepad }) => {
     if (gotoNotepad) {
       setNotepadData({
         id: "",
+        userID: "",
         title: "",
         data: "",
         importance: "Medium",
@@ -92,18 +93,33 @@ const LetterPad = ({ editData, gotoNotepad }) => {
       return;
     }
 
+    const loggedUser = JSON.parse(localStorage.getItem("NoteUser"));
+    const userID = loggedUser?.id;
+
+    if (!userID) {
+      showToast("Please login before saving notes.", "error");
+      return;
+    }
+
     setIsSaving(true);
+
     try {
       let res;
+
       if (editData && editData.id) {
+        // UPDATE note
         res = await updateNoteApi(editData.id, {
           ...notepadData,
+          userID, // <-- ADD USER ID
           updatedAt: new Date().toLocaleString()
         });
         showToast("Note updated successfully! 🎉", "success");
+
       } else {
+        // CREATE new note
         res = await addNoteApi({
           ...notepadData,
+          userID, // <-- ADD USER ID
           createdAt: new Date().toLocaleString()
         });
         showToast("Note created successfully! ✨", "success");
@@ -111,10 +127,7 @@ const LetterPad = ({ editData, gotoNotepad }) => {
 
       console.log("Saved Note:", res);
 
-      // Navigate after a short delay to show the success message
-      setTimeout(() => {
-        navigate("/notes");
-      }, 1500);
+      setTimeout(() => navigate("/notes"), 1500);
 
     } catch (error) {
       console.error("Error saving note:", error);
@@ -123,6 +136,7 @@ const LetterPad = ({ editData, gotoNotepad }) => {
       setIsSaving(false);
     }
   };
+
 
   const handleClear = () => {
     if (notepadData.title.trim() || notepadData.data.trim()) {
