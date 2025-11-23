@@ -177,6 +177,13 @@ function LoginRegister({ login }) {
                 >
                     {login ? "Login" : "Register"}
                 </button>
+
+                <p className="text-center mt-3" style={{ fontSize: "14px" }}>
+                    {login ? "Don't have an account?" : "Already have an account?"}
+                    <a href={login ? "/register" : "/login"} className="ms-1 text-decoration-none" >
+                        {login ? "Register" : "Login"}
+                    </a>
+                </p>
             </div>
         </div>
     );
