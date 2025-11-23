@@ -38,15 +38,28 @@ function LoginRegister({ login }) {
             const response = await loginUserApi({ email, password });
 
             if (response.status === 200) {
+
+                // response.data is an array of users
+                const storeData = response.data.find(
+                    user => user.email === email && user.password === password
+                );
+
+                if (!storeData) {
+                    alert("Invalid email or password!");
+                    return;
+                }
+
                 alert("Login Successful 🎉");
-                localStorage.setItem("NoteUser", JSON.stringify(response.data));
+                localStorage.setItem("NoteUser", JSON.stringify(storeData));
                 navigate("/notes");
             }
+
         } catch (error) {
-            alert("Invalid email or password!");
+            alert("Invalid email or wrong password!");
             console.error("Login Error →", error);
         }
     };
+
 
     // ---------- REGISTER ----------
     const handleRegister = async () => {
